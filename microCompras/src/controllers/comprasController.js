@@ -81,7 +81,7 @@ async function calcularTotal(orden, usuario) {
         ordenTotal += valorMedicamento;
         arrayOrden.push(`(null, ${usuario}, ${response.data[0].DESCRIPCION}, ${medicamento.cantidad}, ${valorMedicamento})`)
     }
-    return (ordenTotal, arrayOrden);
+    return [ordenTotal, arrayOrden];
 }
 
 // Función para verificar si hay suficientes unidades de los productos para realizar la orden 
