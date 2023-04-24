@@ -38,8 +38,9 @@ router.post('/compras', async (req, res) => {
     const orden = req.body.items;
     console.log(req.body);
     const informacionCuenta = await calcularTotal(orden, usuario);
+    console.log(informacionCuenta);
     const totalCuenta = informacionCuenta[0];
-    const insertarValores = informacionCuenta[1].join(",");
+    const insertarValores = (informacionCuenta[1]).join(",");
     // Si el total es 0 o negativo, retornamos un error
     if (totalCuenta <= 0) {
         return res.json({ error: 'Compra Invalida total' });
