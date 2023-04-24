@@ -12,6 +12,12 @@ async function crearCompra(compra) {
     const result = await connection.query('INSERT INTO compras VALUES (null, ?, ?, Now())', [user, totalCuenta, FechaCompra]);
     return result;
 }
+async function crearDetalleCompra(compra) {
+    const compras = compra.compras;    
+    console.log(compras)
+    const result = await connection.query('INSERT INTO medicamentos_por_usuarios (id, usuario, medicamento_nombre, cantidad, precio_total) VALUES ?)', [compras]);
+    return result;
+}
 async function traerCompra(id) {
     const user = await connection.query('SELECT nombre FROM usuarios WHERE usuario = ?', id);
     const result = await connection.query('SELECT totalCuenta, DATE_FORMAT(FechaCompra, "%M %e %Y") as FechaCompra, id  FROM compras WHERE nombreCliente = ? ', user[0][0].nombre);
@@ -37,6 +43,6 @@ async function traerCompras() {
     traerCompra,
     traerCompras,
     traerCompraCliente,
-    traerNotificaciones
-
+    traerNotificaciones,
+    crearDetalleCompra
 };

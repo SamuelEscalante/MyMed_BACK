@@ -37,7 +37,9 @@ router.post('/compras', async (req, res) => {
     const usuario = req.body.usuario;
     const orden = req.body.items;
     console.log(req.body);
-    const totalCuenta = await calcularTotal(orden);
+    const informacionCuenta = await calcularTotal(orden);
+    const totalCuenta = informacionCuenta[0];
+    const insertarValores = informacionCuenta[1].join(",");
     // Si el total es 0 o negativo, retornamos un error
     if (totalCuenta <= 0) {
         return res.json({ error: 'Compra Invalida total' });
@@ -57,6 +59,7 @@ router.post('/compras', async (req, res) => {
         "user": name,  "totalCuenta": totalCuenta
     }
     const ordenRes = await comprasModel.crearCompra(compra);
+    const ordenDetalle = await comprasModel.crearDetalleCompra(insertarValores);
     // Disminuimos la cantidad de unidades de los productos
     await actualizarInventario(orden);
     return res.send("orden creada");
@@ -68,12 +71,16 @@ async function calcularTotal(orden) {
     }
 
     let ordenTotal = 0;
+    let arrayOrden = [];
+    let valorMedicamento
     for (const medicamento of orden) {
        const response = await axios.get(`http://192.168.100.2:3002/medicamentos/${medicamento.ID_MEDICAMENTO}`);
 	console.log(response.data[0]);
-        ordenTotal += response.data[0].PRECIO_UNITARIO * parseFloat(medicamento.cantidad);
+        valorMedicamento = response.data[0].PRECIO_UNITARIO * parseFloat(medicamento.cantidad);
+        ordenTotal += valorMedicamento;
+        arrayOrden.push(`(null, ${usuario}, ${response.data[0].DESCRIPCION}, ${medicamento.cantidad}, ${valorMedicamento})`)
     }
-    return ordenTotal;
+    return (ordenTotal, arrayOrden);
 }
 
 // Función para verificar si hay suficientes unidades de los productos para realizar la orden 
