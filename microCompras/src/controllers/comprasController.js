@@ -37,7 +37,7 @@ router.post('/compras', async (req, res) => {
     const usuario = req.body.usuario;
     const orden = req.body.items;
     console.log(req.body);
-    const informacionCuenta = await calcularTotal(orden);
+    const informacionCuenta = await calcularTotal(orden, usuario);
     const totalCuenta = informacionCuenta[0];
     const insertarValores = informacionCuenta[1].join(",");
     // Si el total es 0 o negativo, retornamos un error
@@ -65,7 +65,7 @@ router.post('/compras', async (req, res) => {
     return res.send("orden creada");
 });
 // Función para calcular el total de la ordn
-async function calcularTotal(orden) {
+async function calcularTotal(orden, usuario) {
     if (!Array.isArray(orden)) {
         throw new Error('La variable orden no es un arreglo');
     }
