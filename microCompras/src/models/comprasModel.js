@@ -15,7 +15,7 @@ async function crearCompra(compra) {
 async function crearDetalleCompra(compra) {
     const compras = compra.compras;    
     console.log(compras)
-    const result = await connection.query('INSERT INTO medicamentos_por_usuarios (id, usuario, medicamento_nombre, cantidad, precio_total) VALUES ?)', [compras]);
+    const result = await connection.query('INSERT INTO medicamentos_por_usuarios (id, usuario, medicamento_nombre, cantidad, y) VALUES ?)', [compras]);
     return result;
 }
 async function traerCompra(id) {
