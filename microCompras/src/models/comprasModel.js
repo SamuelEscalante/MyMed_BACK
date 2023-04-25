@@ -10,17 +10,21 @@ async function crearCompra(compra) {
     const totalCuenta = compra.totalCuenta;
     const FechaCompra = compra.FechaCompra
     const result = await connection.query('INSERT INTO compras VALUES (null, ?, ?, Now())', [user, totalCuenta, FechaCompra]);
-    return result;
+    return result[0];
 }
 async function crearDetalleCompra(compras) {  
     console.log(compras);
-    const result = await connection.query(`INSERT INTO medicamentos_por_usuarios (id, usuario, medicamento_nombre, cantidad, precio_total) VALUES ${compras}`, []);
+    const result = await connection.query(`INSERT INTO medicamentos_por_usuarios (id, usuario, medicamento_nombre, cantidad, precio_total, medicamento_id, compra_id) VALUES ${compras}`, []);
     return result;
 }
 async function traerCompra(id) {
     const user = await connection.query('SELECT nombre FROM usuarios WHERE usuario = ?', id);
+    const dict_send = {}
     const result = await connection.query('SELECT totalCuenta, DATE_FORMAT(FechaCompra, "%M %e %Y") as FechaCompra, id  FROM compras WHERE nombreCliente = ? ', user[0][0].nombre);
-    return result[0];
+    dict_send['total'] = result[0];
+    const result1 = await connection.query('SELECT totalCuenta, DATE_FORMAT(FechaCompra, "%M %e %Y") as FechaCompra, id  FROM medicamentos_por_usuarios WHERE nombreCliente = ? ', user[0][0].nombre);
+    dict_send['detalle'] = result1[0];
+    return dict_send
 }
 
 async function traerNotificaciones() {

@@ -41,7 +41,8 @@ router.post('/compras', async (req, res) => {
     console.log(informacionCuenta);
     const totalCuenta = informacionCuenta[0];
     console.log(informacionCuenta[1]);
-    const insertarValores = (informacionCuenta[1]).join(",");
+    // const insertarValores = (informacionCuenta[1]).join(",");    
+    let insertarValores = informacionCuenta[1];
     console.log(insertarValores);
     // Si el total es 0 o negativo, retornamos un error
     if (totalCuenta <= 0) {
@@ -57,11 +58,13 @@ router.post('/compras', async (req, res) => {
     const response = await
         axios.get(`http://192.168.100.2:3001/usuarios/${usuario}`);
     const name = response.data.nombre;
-     
+    
     compra = {
         "user": name,  "totalCuenta": totalCuenta
     }
     const ordenRes = await comprasModel.crearCompra(compra);
+    console.log('ordenRes')
+    console.log(ordenRes)
     const ordenDetalle = await comprasModel.crearDetalleCompra(insertarValores);
     // Disminuimos la cantidad de unidades de los productos
     await actualizarInventario(orden);
@@ -72,7 +75,6 @@ async function calcularTotal(orden, usuario) {
     if (!Array.isArray(orden)) {
         throw new Error('La variable orden no es un arreglo');
     }
-
     let ordenTotal = 0;
     let arrayOrden = [];
     let valorMedicamento
@@ -81,7 +83,7 @@ async function calcularTotal(orden, usuario) {
 	console.log(response.data[0]);
         valorMedicamento = response.data[0].PRECIO_UNITARIO * parseFloat(medicamento.cantidad);
         ordenTotal += valorMedicamento;
-        arrayOrden.push(`(null, '${usuario}', '${response.data[0].DESCRIPCION}', ${medicamento.cantidad}, ${valorMedicamento})`)
+        arrayOrden.push(['null', `${usuario}`, `${response.data[0].DESCRIPCION}`, `${medicamento.cantidad}`, `${valorMedicamento}`]);
     }
     return [ordenTotal, arrayOrden];
 }
