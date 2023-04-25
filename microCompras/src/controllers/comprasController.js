@@ -92,7 +92,7 @@ async function calcularTotal(orden, usuario) {
 	console.log(response.data[0]);
         valorMedicamento = response.data[0].PRECIO_UNITARIO * parseFloat(medicamento.cantidad);
         ordenTotal += valorMedicamento;
-        arrayOrden.push(['null', `${usuario}`, `${response.data[0].DESCRIPCION}`, `${medicamento.cantidad}`, `${valorMedicamento}`, `${response.data[0].ID_MEDICAMENTO}`]);
+        arrayOrden.push(['null', `'${usuario}'`, `'${response.data[0].DESCRIPCION}'`, `${medicamento.cantidad}`, `${valorMedicamento}`, `${response.data[0].ID_MEDICAMENTO}`]);
     }
     return [ordenTotal, arrayOrden];
 }
