@@ -10,7 +10,6 @@ async function crearCompra(compra) {
     const totalCuenta = compra.totalCuenta;
     const FechaCompra = compra.FechaCompra
     const result = await connection.query('INSERT INTO compras VALUES (null, ?, ?, Now())', [user, totalCuenta, FechaCompra]);
-    console.log(result);
     return result[0];
 }
 async function crearDetalleCompra(compras) {  
