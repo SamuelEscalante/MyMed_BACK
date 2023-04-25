@@ -40,8 +40,6 @@ router.post('/compras', async (req, res) => {
     const informacionCuenta = await calcularTotal(orden, usuario);
     console.log(informacionCuenta);
     const totalCuenta = informacionCuenta[0];
-    console.log(informacionCuenta[1]);
-    // const insertarValores = (informacionCuenta[1]).join(",");    
     let insertarValores = informacionCuenta[1];
     console.log(insertarValores);
     // Si el total es 0 o negativo, retornamos un error
@@ -63,12 +61,11 @@ router.post('/compras', async (req, res) => {
         "user": name,  "totalCuenta": totalCuenta
     }
     const ordenRes = await comprasModel.crearCompra(compra);
-    console.log('ordenRes.ResultSetHeader');
-    console.log(ordenRes);
-    console.log(ordenRes.insertId);
     const id_compra = ordenRes.insertId;
     let str_compra = "";
     for  (const [index, row] of insertarValores) {
+        console.log(index);
+        console.log(row);
         insertarValores[index].push(id_compra);
         insertarValores[index] = `(${(insertarValores[index]).join(',')})`
     }
@@ -89,7 +86,7 @@ async function calcularTotal(orden, usuario) {
     }
     let ordenTotal = 0;
     let arrayOrden = [];
-    let valorMedicamento
+    let valorMedicamento;
     for (const medicamento of orden) {
        const response = await axios.get(`http://192.168.100.2:3002/medicamentos/${medicamento.ID_MEDICAMENTO}`);
 	console.log(response.data[0]);
