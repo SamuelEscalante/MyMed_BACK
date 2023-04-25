@@ -25,6 +25,7 @@ async function traerCompra(id) {
     // dict_send['total'] = result[0];
     // const result1 = await connection.query('SELECT totalCuenta, DATE_FORMAT(FechaCompra, "%M %e %Y") as FechaCompra, id  FROM medicamentos_por_usuarios WHERE nombreCliente = ? ', user[0][0].nombre);
     // dict_send['detalle'] = result1[0];
+    console.log(result);
     return result;
     return dict_send;
 }
