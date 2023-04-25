@@ -26,7 +26,7 @@ async function traerCompra(id) {
     // const result1 = await connection.query('SELECT totalCuenta, DATE_FORMAT(FechaCompra, "%M %e %Y") as FechaCompra, id  FROM medicamentos_por_usuarios WHERE nombreCliente = ? ', user[0][0].nombre);
     // dict_send['detalle'] = result1[0];
     console.log(result[0]);
-    return result;
+    return result[0];
     return dict_send;
 }
 
@@ -41,7 +41,7 @@ async function traerCompraCliente(nombre) {
 
 
 async function traerCompras() {
-    const result = await connection.query('SELECT * FROM compras');
+    const result = await connection.query('SELECT medic.usuario AS usuario, medic.medicamento_nombre AS medicamentoNombre, medic.cantidad AS cantidad, medic.precio_total AS precioTotal, compras.totalCuenta AS totalCuenta, DATE_FORMAT(compras.FechaCompra, "%M %e %Y") AS FechaCompra, compras.id AS comprasId  FROM medicamentos_por_usuarios AS medic INNER JOIN compras ON medic.compra_id = compras.id');
     return result[0];
 }
     module.exports = {
