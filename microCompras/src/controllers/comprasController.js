@@ -17,7 +17,6 @@ router.get('/notificaciones', async (req, res) => {
 
 router.get('/compras/:id', async (req, res) => {
     const id = req.params.id;
-    console.log('|--|')
     var result;
     result = await comprasModel.traerCompra(id);
     res.json(result);
@@ -36,12 +35,9 @@ router.get('/compras/usuarios/:user', async (req, res) => {
 router.post('/compras', async (req, res) => {
     const usuario = req.body.usuario;
     const orden = req.body.items;
-    console.log(req.body);
     const informacionCuenta = await calcularTotal(orden, usuario);
-    console.log(informacionCuenta);
     const totalCuenta = informacionCuenta[0];
     let insertarValores = informacionCuenta[1];
-    console.log(insertarValores);
     // Si el total es 0 o negativo, retornamos un error
     if (totalCuenta <= 0) {
         return res.json({ error: 'Compra Invalida total' });
@@ -64,16 +60,10 @@ router.post('/compras', async (req, res) => {
     const id_compra = ordenRes.insertId;
     let str_compra = "";
     for  (const [index, row] of insertarValores.entries()) {
-        console.log(index);
-        console.log(row);
         insertarValores[index].push(id_compra);
         insertarValores[index] = `(${(insertarValores[index]).join(',')})`
     }
     str_compra = (insertarValores).join(',');
-    console.log('insertarValores');
-    console.log(insertarValores);
-    console.log("str_compra");
-    console.log(str_compra);
     const ordenDetalle = await comprasModel.crearDetalleCompra(insertarValores);
     // Disminuimos la cantidad de unidades de los productos
     await actualizarInventario(orden);
@@ -88,8 +78,7 @@ async function calcularTotal(orden, usuario) {
     let arrayOrden = [];
     let valorMedicamento;
     for (const medicamento of orden) {
-       const response = await axios.get(`http://192.168.100.2:3002/medicamentos/${medicamento.ID_MEDICAMENTO}`);
-	console.log(response.data[0]);
+        const response = await axios.get(`http://192.168.100.2:3002/medicamentos/${medicamento.ID_MEDICAMENTO}`);
         valorMedicamento = response.data[0].PRECIO_UNITARIO * parseFloat(medicamento.cantidad);
         ordenTotal += valorMedicamento;
         arrayOrden.push(['null', `'${usuario}'`, `'${response.data[0].DESCRIPCION}'`, `${medicamento.cantidad}`, `${valorMedicamento}`, `${response.data[0].ID_MEDICAMENTO}`]);

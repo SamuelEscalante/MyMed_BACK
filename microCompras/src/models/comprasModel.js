@@ -20,8 +20,9 @@ async function crearDetalleCompra(compras) {
 async function traerCompra(id) {
     const user = await connection.query('SELECT nombre FROM usuarios WHERE usuario = ?', id);
     const dict_send = {}
-    const result = await connection.query('SELECT totalCuenta, DATE_FORMAT(FechaCompra, "%M %e %Y") as FechaCompra, id  FROM compras WHERE nombreCliente = ? ', user[0][0].nombre);
-    // dict_send['total'] = result[0];  
+    // const result = await connection.query('SELECT totalCuenta, DATE_FORMAT(FechaCompra, "%M %e %Y") as FechaCompra, id  FROM compras WHERE nombreCliente = ? ', user[0][0].nombre);
+    const result = await connection.query('SELECT medic.usuario AS usuario, medic.medicamento_nombre AS medicamentoNombre, medic.cantidad AS cantidad, medic.precio_total AS precioTotal, compras.totalCuenta AS totalCuenta, DATE_FORMAT(compras.FechaCompra, "%M %e %Y") AS FechaCompra, compras.id AS comprasId  FROM medicamentos_por_usuarios AS medic INNER JOIN compras ON medic.compra_id = compras.id WHERE nombreCliente = ? ', user[0][0].nombre);
+    // dict_send['total'] = result[0];
     // const result1 = await connection.query('SELECT totalCuenta, DATE_FORMAT(FechaCompra, "%M %e %Y") as FechaCompra, id  FROM medicamentos_por_usuarios WHERE nombreCliente = ? ', user[0][0].nombre);
     // dict_send['detalle'] = result1[0];
     return result;
