@@ -63,7 +63,7 @@ router.post('/compras', async (req, res) => {
     const ordenRes = await comprasModel.crearCompra(compra);
     const id_compra = ordenRes.insertId;
     let str_compra = "";
-    for  (const [index, row] of insertarValores) {
+    for  (const [index, row] of insertarValores.entries()) {
         console.log(index);
         console.log(row);
         insertarValores[index].push(id_compra);
