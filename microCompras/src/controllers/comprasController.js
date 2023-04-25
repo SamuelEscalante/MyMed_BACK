@@ -63,8 +63,17 @@ router.post('/compras', async (req, res) => {
         "user": name,  "totalCuenta": totalCuenta
     }
     const ordenRes = await comprasModel.crearCompra(compra);
-    console.log('ordenRes')
-    console.log(ordenRes)
+    const id_compra = ordenRes.ResultSetHeader.insertId
+    let str_compra = "";
+    for  (const [index, row] of insertarValores) {
+        insertarValores[index].push(id_compra);
+        insertarValores[index] = `(${(insertarValores[index]).join(',')})`
+    }
+    str_compra = (insertarValores).join(',');
+    console.log('insertarValores');
+    console.log(insertarValores);
+    console.log("str_compra");
+    console.log(str_compra);
     const ordenDetalle = await comprasModel.crearDetalleCompra(insertarValores);
     // Disminuimos la cantidad de unidades de los productos
     await actualizarInventario(orden);
@@ -83,7 +92,7 @@ async function calcularTotal(orden, usuario) {
 	console.log(response.data[0]);
         valorMedicamento = response.data[0].PRECIO_UNITARIO * parseFloat(medicamento.cantidad);
         ordenTotal += valorMedicamento;
-        arrayOrden.push(['null', `${usuario}`, `${response.data[0].DESCRIPCION}`, `${medicamento.cantidad}`, `${valorMedicamento}`]);
+        arrayOrden.push(['null', `${usuario}`, `${response.data[0].DESCRIPCION}`, `${medicamento.cantidad}`, `${valorMedicamento}`, `${response.data[0].ID_MEDICAMENTO}`]);
     }
     return [ordenTotal, arrayOrden];
 }
