@@ -63,6 +63,8 @@ router.post('/compras', async (req, res) => {
         "user": name,  "totalCuenta": totalCuenta
     }
     const ordenRes = await comprasModel.crearCompra(compra);
+    console.log('ordenRes.ResultSetHeader')
+    console.log(ordenRes.ResultSetHeader)
     const id_compra = ordenRes.ResultSetHeader.insertId
     let str_compra = "";
     for  (const [index, row] of insertarValores) {
