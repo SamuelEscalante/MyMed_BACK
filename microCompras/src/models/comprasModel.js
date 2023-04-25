@@ -21,10 +21,11 @@ async function traerCompra(id) {
     const user = await connection.query('SELECT nombre FROM usuarios WHERE usuario = ?', id);
     const dict_send = {}
     const result = await connection.query('SELECT totalCuenta, DATE_FORMAT(FechaCompra, "%M %e %Y") as FechaCompra, id  FROM compras WHERE nombreCliente = ? ', user[0][0].nombre);
-    dict_send['total'] = result[0];
-    const result1 = await connection.query('SELECT totalCuenta, DATE_FORMAT(FechaCompra, "%M %e %Y") as FechaCompra, id  FROM medicamentos_por_usuarios WHERE nombreCliente = ? ', user[0][0].nombre);
-    dict_send['detalle'] = result1[0];
-    return dict_send
+    // dict_send['total'] = result[0];  
+    // const result1 = await connection.query('SELECT totalCuenta, DATE_FORMAT(FechaCompra, "%M %e %Y") as FechaCompra, id  FROM medicamentos_por_usuarios WHERE nombreCliente = ? ', user[0][0].nombre);
+    // dict_send['detalle'] = result1[0];
+    return result;
+    return dict_send;
 }
 
 async function traerNotificaciones() {
