@@ -19,7 +19,20 @@ router.get('/compras/:id', async (req, res) => {
     const id = req.params.id;
     var result;
     result = await comprasModel.traerCompra(id);
-    res.json(result);
+    let dict_result = {}
+    for (const row of result) {
+        if (row.comprasId in dict_result) {
+            dict_result[row.comprasId]["record"].push(row);
+        } else {
+            dict_result[row.comprasId] = {"record":[row], "len":0};
+        }
+    }
+    for (let [key, row] of Object.entries(dict_result)) {
+        dict_result[key]["len"] = dict_result[key]["record"].length;
+    }
+    console.log('dict_result')
+    console.log(dict_result)
+    res.json(dict_result);
 });
 
 router.get('/compras/usuarios/:user', async (req, res) => {
