@@ -32,7 +32,9 @@ router.get('/compras/:id', async (req, res) => {
     }
     console.log('dict_result')
     console.log(dict_result)
-    res.json(dict_result);
+    const result_send = JSON.stringify(dict_result);
+    console.log(result_send);
+    res.json(result_send);
 });
 
 router.get('/compras/usuarios/:user', async (req, res) => {
