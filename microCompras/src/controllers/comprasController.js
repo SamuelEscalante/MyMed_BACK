@@ -30,12 +30,7 @@ router.get('/compras/:id', async (req, res) => {
     for (let [key, row] of Object.entries(dict_result)) {
         dict_result[key]["len"] = dict_result[key]["record"].length;
     }
-    console.log('dict_result')
-    console.log(dict_result)
-    // const result_send = JSON.stringify(dict_result);
-    const result_send = dict_result;
-    console.log(result_send);
-    res.json(result_send);
+    res.json(dict_result);
 });
 
 router.get('/compras/usuarios/:user', async (req, res) => {
