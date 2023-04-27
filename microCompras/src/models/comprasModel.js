@@ -20,11 +20,12 @@ async function crearDetalleCompra(compras) {
 async function traerCompra(id) {
     const user = await connection.query('SELECT nombre, jefe FROM usuarios WHERE usuario = ?', id);
     const dict_send = {}
+    let result;
     // const result = await connection.query('SELECT totalCuenta, DATE_FORMAT(FechaCompra, "%M %e %Y") as FechaCompra, id  FROM compras WHERE nombreCliente = ? ', user[0][0].nombre);
     if (user[0][0].jefe == 1) {
-        const result = await connection.query('SELECT medic.usuario AS usuario, medic.medicamento_id AS medicamentoId, medic.medicamento_nombre AS medicamentoNombre, medic.cantidad AS cantidad, medic.precio_total AS precioTotal, compras.totalCuenta AS totalCuenta, DATE_FORMAT(compras.FechaCompra, "%M %e %Y") AS FechaCompra, compras.id AS comprasId  FROM medicamentos_por_usuarios AS medic INNER JOIN compras ON medic.compra_id = compras.id ORDER BY compras.id DESC', []);
+        result = await connection.query('SELECT medic.usuario AS usuario, medic.medicamento_id AS medicamentoId, medic.medicamento_nombre AS medicamentoNombre, medic.cantidad AS cantidad, medic.precio_total AS precioTotal, compras.totalCuenta AS totalCuenta, DATE_FORMAT(compras.FechaCompra, "%M %e %Y") AS FechaCompra, compras.id AS comprasId  FROM medicamentos_por_usuarios AS medic INNER JOIN compras ON medic.compra_id = compras.id ORDER BY compras.id DESC', []);
     } else {
-        const result = await connection.query('SELECT medic.usuario AS usuario, medic.medicamento_id AS medicamentoId, medic.medicamento_nombre AS medicamentoNombre, medic.cantidad AS cantidad, medic.precio_total AS precioTotal, compras.totalCuenta AS totalCuenta, DATE_FORMAT(compras.FechaCompra, "%M %e %Y") AS FechaCompra, compras.id AS comprasId  FROM medicamentos_por_usuarios AS medic INNER JOIN compras ON medic.compra_id = compras.id WHERE nombreCliente = ? ORDER BY compras.id DESC', user[0][0].nombre);
+        result = await connection.query('SELECT medic.usuario AS usuario, medic.medicamento_id AS medicamentoId, medic.medicamento_nombre AS medicamentoNombre, medic.cantidad AS cantidad, medic.precio_total AS precioTotal, compras.totalCuenta AS totalCuenta, DATE_FORMAT(compras.FechaCompra, "%M %e %Y") AS FechaCompra, compras.id AS comprasId  FROM medicamentos_por_usuarios AS medic INNER JOIN compras ON medic.compra_id = compras.id WHERE nombreCliente = ? ORDER BY compras.id DESC', user[0][0].nombre);
     }
     // dict_send['total'] = result[0];
     // const result1 = await connection.query('SELECT totalCuenta, DATE_FORMAT(FechaCompra, "%M %e %Y") as FechaCompra, id  FROM medicamentos_por_usuarios WHERE nombreCliente = ? ', user[0][0].nombre);
