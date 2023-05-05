@@ -60,9 +60,14 @@ router.post('/compras', async (req, res) => {
         return res.json({ error: 'No hay disponibilidad de medicamentos' });
     }
     // Creamos la orden
+    console.log("usuario");
+    console.log(usuario)
     const response = await
         axios.get(`http://192.168.100.2:3001/usuarios/${usuario}`);
     const name = response.data.usuario;
+    
+    console.log("Name -:");
+    console.log(name);
     
     compra = {
         "user": name,  "totalCuenta": totalCuenta
