@@ -37,7 +37,7 @@ router.get('/compras/usuarios/:user', async (req, res) => {
     const user = req.params.user;
     const response = await
         axios.get(`http://192.168.100.2:3001/usuarios/${user}`);
-    const nombre = response.data.nombre
+    const nombre = response.data.usuario
     var result;
     result = await comprasModel.traerCompraCliente(nombre);
     res.json(result);
