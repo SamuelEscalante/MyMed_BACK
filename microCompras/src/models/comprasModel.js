@@ -6,8 +6,6 @@ const connection = mysql.createPool({
     database: 'inventariomymed'
 });
 async function crearCompra(compra) {
-    console.log("Compras -:");
-    console.log(compra);
     const user = compra.user;
     const totalCuenta = compra.totalCuenta;
     const FechaCompra = compra.FechaCompra
@@ -15,7 +13,6 @@ async function crearCompra(compra) {
     return result[0];
 }
 async function crearDetalleCompra(compras) {  
-    console.log(compras);
     const result = await connection.query(`INSERT INTO medicamentos_por_usuarios (id, usuario, medicamento_nombre, cantidad, precio_total, medicamento_id, compra_id) VALUES ${compras}`, []);
     return result;
 }
@@ -28,7 +25,6 @@ async function traerCompra(id) {
     } else {
         result = await connection.query('SELECT medic.usuario AS usuario, medic.medicamento_id AS medicamentoId, medic.medicamento_nombre AS medicamentoNombre, medic.cantidad AS cantidad, medic.precio_total AS precioTotal, compras.totalCuenta AS totalCuenta, DATE_FORMAT(compras.FechaCompra, "%M %e %Y") AS FechaCompra, compras.id AS comprasId  FROM medicamentos_por_usuarios AS medic INNER JOIN compras ON medic.compra_id = compras.id WHERE nombreCliente = ? ORDER BY compras.id DESC', user[0][0].nombre);
     }
-    console.log(result[0]);
     return result[0];
     return dict_send;
 }

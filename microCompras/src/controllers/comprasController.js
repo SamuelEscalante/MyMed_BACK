@@ -44,8 +44,6 @@ router.get('/compras/usuarios/:user', async (req, res) => {
 });
 
 router.post('/compras', async (req, res) => {
-    console.log("req.body");
-    console.log(req.body);
     const usuario = req.body.usuario;
     const orden = req.body.items;
     const informacionCuenta = await calcularTotal(orden, usuario);
@@ -62,14 +60,9 @@ router.post('/compras', async (req, res) => {
         return res.json({ error: 'No hay disponibilidad de medicamentos' });
     }
     // Creamos la orden
-    console.log("usuario");
-    console.log(usuario)
     const response = await
         axios.get(`http://192.168.100.2:3001/usuarios/${usuario}`);
     const name = response.data.usuario;
-    
-    console.log("Name -:");
-    console.log(name);
     
     compra = {
         "user": name,  "totalCuenta": totalCuenta
@@ -83,8 +76,6 @@ router.post('/compras', async (req, res) => {
     }
     str_compra = (insertarValores).join(',');
     
-    console.log("InsertarValores -:");
-    console.log(insertarValores);
     const ordenDetalle = await comprasModel.crearDetalleCompra(insertarValores);
     // Disminuimos la cantidad de unidades de los productos
     await actualizarInventario(orden);
