@@ -62,7 +62,7 @@ router.post('/compras', async (req, res) => {
     // Creamos la orden
     const response = await
         axios.get(`http://192.168.100.2:3001/usuarios/${usuario}`);
-    const name = response.data.nombre;
+    const name = response.data.usuario;
     
     compra = {
         "user": name,  "totalCuenta": totalCuenta
