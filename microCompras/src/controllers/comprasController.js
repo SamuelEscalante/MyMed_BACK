@@ -92,7 +92,7 @@ async function calcularTotal(orden, usuario) {
         const response = await axios.get(`http://192.168.100.2:3002/medicamentos/${medicamento.ID_MEDICAMENTO}`);
         valorMedicamento = response.data[0].PRECIO_UNITARIO * parseFloat(medicamento.cantidad);
         ordenTotal += valorMedicamento;
-        arrayOrden.push(['null', `'${usuario}'`, `'${response.data[0].DESCRIPCION}'`, `${medicamento.cantidad}`, `${valorMedicamento}`, `${response.data[0].ID_MEDICAMENTO}`]);
+        arrayOrden.push([ `'${usuario}'`, `'${response.data[0].DESCRIPCION}'`, `${medicamento.cantidad}`, `${valorMedicamento}`, `${response.data[0].ID_MEDICAMENTO}`]);
     }
     return [ordenTotal, arrayOrden];
 }
