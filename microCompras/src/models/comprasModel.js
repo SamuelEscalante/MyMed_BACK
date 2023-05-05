@@ -23,7 +23,7 @@ async function traerCompra(id) {
     if (user[0][0].jefe == 1) {
         result = await connection.query('SELECT medic.usuario AS usuario, medic.medicamento_id AS medicamentoId, medic.medicamento_nombre AS medicamentoNombre, medic.cantidad AS cantidad, medic.precio_total AS precioTotal, compras.totalCuenta AS totalCuenta, DATE_FORMAT(compras.FechaCompra, "%M %e %Y") AS FechaCompra, compras.id AS comprasId  FROM medicamentos_por_usuarios AS medic INNER JOIN compras ON medic.compra_id = compras.id ORDER BY compras.id DESC', []);
     } else {
-        result = await connection.query('SELECT medic.usuario AS usuario, medic.medicamento_id AS medicamentoId, medic.medicamento_nombre AS medicamentoNombre, medic.cantidad AS cantidad, medic.precio_total AS precioTotal, compras.totalCuenta AS totalCuenta, DATE_FORMAT(compras.FechaCompra, "%M %e %Y") AS FechaCompra, compras.id AS comprasId  FROM medicamentos_por_usuarios AS medic INNER JOIN compras ON medic.compra_id = compras.id WHERE nombreCliente = ? ORDER BY compras.id DESC', user[0][0].usuario);
+        result = await connection.query('SELECT medic.usuario AS usuario, medic.medicamento_id AS medicamentoId, medic.medicamento_nombre AS medicamentoNombre, medic.cantidad AS cantidad, medic.precio_total AS precioTotal, compras.totalCuenta AS totalCuenta, DATE_FORMAT(compras.FechaCompra, "%M %e %Y") AS FechaCompra, compras.id AS comprasId  FROM medicamentos_por_usuarios AS medic INNER JOIN compras ON medic.compra_id = compras.id WHERE compras.nombreCliente = ? ORDER BY compras.id DESC', user[0][0].usuario);
     }
     return result[0];
     return dict_send;
