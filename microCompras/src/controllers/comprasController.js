@@ -75,6 +75,9 @@ router.post('/compras', async (req, res) => {
         insertarValores[index] = `(${(insertarValores[index]).join(',')})`
     }
     str_compra = (insertarValores).join(',');
+    
+    console.log("InsertarValores -:");
+    console.log(insertarValores);
     const ordenDetalle = await comprasModel.crearDetalleCompra(insertarValores);
     // Disminuimos la cantidad de unidades de los productos
     await actualizarInventario(orden);
