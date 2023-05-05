@@ -17,10 +17,8 @@ async function crearDetalleCompra(compras) {
     return result;
 }
 async function traerCompra(id) {
-    const user = await connection.query('SELECT nombre, jefe FROM usuarios WHERE usuario = ?', id);
+    const user = await connection.query('SELECT usuario, jefe FROM usuarios WHERE usuario = ?', id);
     const dict_send = {}
-    console.log(user[0]);
-    console.log(user[0][0]);
     let result;
     if (user[0][0].jefe == 1) {
         result = await connection.query('SELECT medic.usuario AS usuario, medic.medicamento_id AS medicamentoId, medic.medicamento_nombre AS medicamentoNombre, medic.cantidad AS cantidad, medic.precio_total AS precioTotal, compras.totalCuenta AS totalCuenta, DATE_FORMAT(compras.FechaCompra, "%M %e %Y") AS FechaCompra, compras.id AS comprasId  FROM medicamentos_por_usuarios AS medic INNER JOIN compras ON medic.compra_id = compras.id ORDER BY compras.id DESC', []);
