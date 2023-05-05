@@ -44,6 +44,8 @@ router.get('/compras/usuarios/:user', async (req, res) => {
 });
 
 router.post('/compras', async (req, res) => {
+    console.log("req.body");
+    console.log(req.body);
     const usuario = req.body.usuario;
     const orden = req.body.items;
     const informacionCuenta = await calcularTotal(orden, usuario);
